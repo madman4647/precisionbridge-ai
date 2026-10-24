@@ -31,7 +31,7 @@ async function call(handler: (r: Request, c: any) => Promise<Response>, user: st
   const req = new Request(opts.url ?? "http://localhost/api/x", { method: opts.method ?? "GET", headers, body: opts.body ? JSON.stringify(opts.body) : undefined });
   const res = await handler(req, { params: Promise.resolve({ id: opts.id ?? "" }) });
   const text = await res.text();
-  let j: any = null; try { j = JSON.parse(text); } catch {}
+  let j: any = null; try { j = JSON.parse(text); } catch { /* non-JSON (export) response */ }
   return { status: res.status, json: j, text };
 }
 

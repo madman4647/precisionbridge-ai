@@ -58,7 +58,7 @@ const AGE_BANDS = ["18-34", "35-54", "55-74"];
 
 const iso = (d: Date) => d.toISOString();
 const pad = (n: number) => String(n).padStart(3, "0");
-const pickW = <T,>(rnd: () => number, opts: [T, number][]): T => { let r = rnd(), acc = 0; for (const [v, w] of opts) { acc += w; if (r < acc) return v; } return opts[opts.length - 1][0]; };
+const pickW = <T,>(rnd: () => number, opts: [T, number][]): T => { const r = rnd(); let acc = 0; for (const [v, w] of opts) { acc += w; if (r < acc) return v; } return opts[opts.length - 1][0]; };
 const gauss = (rnd: () => number, m: number, sd: number) => { const u = Math.max(rnd(), 1e-9), v = rnd(); return m + sd * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
 
 function datum(value: Datum["value"], over: Partial<Datum> = {}): Datum {

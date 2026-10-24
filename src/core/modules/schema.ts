@@ -2,7 +2,7 @@ import { z } from "zod";
 import { CondSchema } from "./dsl";
 
 const isoDate = z.string().regex(/^\d{4}(-\d{2}(-\d{2})?)?$/, "date must be YYYY, YYYY-MM or YYYY-MM-DD");
-const id = z.string().regex(/^[A-Za-z0-9_.\-]+$/);
+const id = z.string().regex(/^[A-Za-z0-9_.-]+$/);
 
 export const GuidelineSourceSchema = z.object({
   id,

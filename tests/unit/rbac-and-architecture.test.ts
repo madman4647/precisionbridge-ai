@@ -39,3 +39,13 @@ describe("RBAC matrix", () => {
     expect(authorize(null, "patient.read").ok).toBe(false);
   });
 });
+
+describe("research wall and data quality", () => {
+  it("option pipeline and patient wing never import research / hypothesis code (no route from hypotheses into option cards)", () => {
+    for (const dir of ["options", "orchestrator/patientWing.ts", "pgx", "safety"]) {
+      const p = path.resolve(__dirname, "../../src/core", dir);
+      const files = fs.statSync(p).isDirectory() ? walk(p) : [p];
+      for (const f of files) expect(fs.readFileSync(f, "utf8"), f).not.toMatch(/from ["'](\.\.\/)+(research|hypotheses|trials)|from ["']@\/core\/(research|hypotheses|trials)/);
+    }
+  });
+});

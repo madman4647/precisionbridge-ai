@@ -6,6 +6,7 @@ import { audit, fail, guard, ok, type Ctx } from "./context";
 import { definitionHash, type CohortDefinition, type ResearchRecord } from "@/core/research/cohort";
 import { runCohort, runHypotheses, runTrialPrescreen } from "@/core/orchestrator/researchWing";
 import { TrialSnapshotSchema } from "@/core/trials/prescreen";
+import { deterministicCohortSummary, plainCohortSummary } from "./llm";
 import type { CohortRecord, HypothesisRecord } from "@/lib/models";
 
 export const threshold = () => Math.max(1, Number(process.env.SMALL_CELL_THRESHOLD ?? 10) || 10);
@@ -55,7 +56,8 @@ export async function runCohortQuery(ctx: Ctx, input: unknown) {
   const { records, excluded } = await consentedRecords(ctx, "cohort_query");
   const summary = runCohort(records, r.def, { threshold: threshold(), excluded_without_consent: excluded });
   await audit(ctx, { action: "research.cohort_query", outcome: "success", actor_id: g.data.id, actor_role: g.data.role, resource_type: "cohort_definition", resource_id: summary.definition_hash, details: { definition: r.def, suppressed_cells: summary.suppressed_cell_count, result_hash: summary.result_hash } });
-  return ok(summary);
+  const plain = await plainCohortSummary(ctx, deterministicCohortSummary(summary));
+  return ok({ ...summary, plain_summary: plain });
 }
 
 export async function saveCohortDefinition(ctx: Ctx, name: string, input: unknown) {

@@ -9,7 +9,7 @@ export interface PatientRecord {
   profile: Profile; scenarios: string[];
 }
 export interface ConsentRecord { id: string; patient_id: string; kind: "clinical" | "research"; granted: boolean; at: string; changed_by: string; note?: string }
-export interface CheckInRecord extends CheckInInput { }
+export type CheckInRecord = CheckInInput;
 export interface AlertRecord {
   id: string; patient_id: string; checkin_id: string; evaluation_id: string; state: "URGENT" | "PROMPT_REVIEW" | "UNABLE_TO_ASSESS"; status: "open" | "acknowledged";
   summary: string; created_at: string; acknowledged_by?: string; acknowledged_at?: string; disposition?: string;

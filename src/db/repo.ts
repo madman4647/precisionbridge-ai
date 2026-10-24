@@ -32,6 +32,10 @@ export async function listAudit(db: DB, f: { action?: string; outcome?: string; 
   const q = db.select().from(t.auditEvents).where(conds.length ? and(...conds) : undefined).orderBy(desc(t.auditEvents.ts), desc(t.auditEvents.id)).limit(f.limit ?? 200);
   return d<AuditEvent>(await q);
 }
+export async function listAuditByResources(db: DB, ids: string[], limit = 60): Promise<AuditEvent[]> {
+  if (!ids.length) return [];
+  return d<AuditEvent>(await db.select().from(t.auditEvents).where(inArray(t.auditEvents.resource_id, ids)).orderBy(desc(t.auditEvents.ts), desc(t.auditEvents.id)).limit(limit));
+}
 export async function countAudit(db: DB, action: string, outcome?: string): Promise<number> {
   const r = await db.select({ n: sql<number>`count(*)::int` }).from(t.auditEvents).where(and(eq(t.auditEvents.action, action), outcome ? eq(t.auditEvents.outcome, outcome) : undefined));
   return Number(r[0]?.n ?? 0);
