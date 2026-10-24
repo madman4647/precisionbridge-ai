@@ -1,0 +1,145 @@
+{
+  "last_evidence_review": "2026-09-15",
+  "clinical_approver": {
+    "name": "UNSIGNED — illustrative placeholder (no qualified clinician has reviewed)",
+    "role": "Clinical reviewer (to be assigned)",
+    "signed_off_at": "2026-09-15",
+    "illustrative_placeholder": true
+  },
+  "effective_status": "active",
+  "illustrative_content_notice": "Illustrative content — pending clinical review",
+  "validation_case_ids": [],
+  "module_id": "asthma_demo",
+  "module_version": "0.1.0",
+  "display_name": "Asthma (portability demo)",
+  "condition_code": "AST",
+  "population_scope": "Adults with asthma (synthetic demo, dummy module)",
+  "guideline_sources": [
+    {
+      "id": "ph-asthma-slot",
+      "title": "Placeholder guideline slot (none attributed)",
+      "publisher": "(none)",
+      "published": "2026",
+      "jurisdiction": "Unspecified (demo)",
+      "review_by": "2027-12-31"
+    }
+  ],
+  "checkin_question_schema": [
+    {
+      "id": "peak_flow",
+      "text": "Your most recent peak flow (L/min)",
+      "type": "number",
+      "concept": "peak_flow",
+      "unit": "L/min",
+      "allowed_units": [
+        "L/min"
+      ],
+      "min": 50,
+      "max": 900,
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "sx_cant_speak",
+      "text": "Are you too breathless to speak in full sentences right now?",
+      "type": "boolean",
+      "required": true,
+      "safety_critical": true
+    }
+  ],
+  "required_profile_fields": [
+    {
+      "key": "allergy_status",
+      "label": "Allergy status",
+      "critical": true,
+      "requires_verification": true
+    }
+  ],
+  "measure_definitions": [
+    {
+      "concept": "peak_flow",
+      "label": "Peak flow",
+      "canonical_unit": "L/min",
+      "units": {
+        "L/min": 1
+      },
+      "plausible_min": 50,
+      "plausible_max": 900
+    }
+  ],
+  "derived_measures": [],
+  "consistency_rules": [],
+  "red_flag_rules": [
+    {
+      "id": "AST-U1",
+      "label": "Too breathless to speak",
+      "when": {
+        "op": "cmp",
+        "field": "answers.sx_cant_speak",
+        "cmp": "eq",
+        "value": true
+      },
+      "state": "URGENT",
+      "patient_message_id": "ast_urgent",
+      "rationale": "Structured severe breathlessness. Demo rule."
+    },
+    {
+      "id": "AST-P1",
+      "label": "Low peak flow",
+      "when": {
+        "op": "cmp",
+        "field": "obs.peak_flow",
+        "cmp": "lt",
+        "value": 200
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "Peak flow below demo review threshold."
+    }
+  ],
+  "free_text_keywords": [],
+  "patient_messages": {
+    "ast_urgent": "Call your local emergency number now."
+  },
+  "treatment_option_cards": [
+    {
+      "id": "ast_demo",
+      "label": "Illustrative controller class",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Demo only",
+      "why_relevant": "Demo only",
+      "why_may_not_suit": "Demo only",
+      "considerations": [
+        "Demo only"
+      ],
+      "requires_fields": [],
+      "hard_exclusions": [],
+      "cautions": [],
+      "preference_effects": [],
+      "evidence": [
+        {
+          "guideline_source_id": "ph-asthma-slot",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "Unspecified (demo)",
+          "rationale": "Illustrative placeholder rationale; pending clinical review.",
+          "applicable_population": "Adults with asthma"
+        }
+      ]
+    }
+  ],
+  "interaction_coverage": [],
+  "drug_gene_evidence": [],
+  "outcome_definitions": [
+    {
+      "id": "ast_ctrl_8w",
+      "label": "Control achieved at 8 weeks",
+      "window_weeks": 8,
+      "definition": "Demo definition"
+    }
+  ],
+  "trial_search_terms": [
+    "asthma"
+  ]
+}

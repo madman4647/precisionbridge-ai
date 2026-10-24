@@ -1,0 +1,566 @@
+{
+  "last_evidence_review": "2026-09-15",
+  "clinical_approver": {
+    "name": "UNSIGNED — illustrative placeholder (no qualified clinician has reviewed)",
+    "role": "Clinical reviewer (to be assigned)",
+    "signed_off_at": "2026-09-15",
+    "illustrative_placeholder": true
+  },
+  "effective_status": "active",
+  "illustrative_content_notice": "Illustrative content — pending clinical review",
+  "validation_case_ids": [],
+  "module_id": "hypertension",
+  "module_version": "1.0.0",
+  "display_name": "Hypertension",
+  "condition_code": "HTN",
+  "population_scope": "Adults with a primary diagnosis of hypertension (synthetic demo)",
+  "guideline_sources": [
+    {
+      "id": "ph-htn-slot",
+      "title": "Placeholder guideline slot — clinical reviewer to select a hypertension guideline (none attributed)",
+      "publisher": "(none)",
+      "published": "2026",
+      "jurisdiction": "Unspecified (demo)",
+      "review_by": "2027-12-31",
+      "note": "No guideline text is quoted or attributed. Option content is illustrative."
+    }
+  ],
+  "checkin_question_schema": [
+    {
+      "id": "sbp",
+      "text": "Your most recent top (systolic) blood pressure reading",
+      "type": "number",
+      "concept": "bp_systolic",
+      "unit": "mmHg",
+      "allowed_units": [
+        "mmHg",
+        "kPa"
+      ],
+      "min": 40,
+      "max": 320,
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "dbp",
+      "text": "Your most recent bottom (diastolic) blood pressure reading",
+      "type": "number",
+      "concept": "bp_diastolic",
+      "unit": "mmHg",
+      "allowed_units": [
+        "mmHg",
+        "kPa"
+      ],
+      "min": 20,
+      "max": 220,
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "sx_chest",
+      "text": "Right now, do you have chest pain or pressure?",
+      "type": "boolean",
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "sx_neuro",
+      "text": "Right now, do you have sudden weakness, a drooping face, or trouble speaking?",
+      "type": "boolean",
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "sx_headache_vision",
+      "text": "Do you have a severe headache or sudden vision changes?",
+      "type": "boolean",
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "missed_doses",
+      "text": "In the last 7 days, how many doses did you miss? (No judgement — this helps your care team.)",
+      "type": "number",
+      "min": 0,
+      "max": 7,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "side_effects",
+      "text": "Any side effects you've noticed?",
+      "type": "multi",
+      "choices": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "dizziness",
+          "label": "Dizziness"
+        },
+        {
+          "value": "cough",
+          "label": "Dry cough"
+        },
+        {
+          "value": "swelling",
+          "label": "Ankle swelling"
+        },
+        {
+          "value": "other",
+          "label": "Other"
+        }
+      ],
+      "required": false,
+      "safety_critical": false
+    },
+    {
+      "id": "wellbeing",
+      "text": "Overall, how are you feeling today? (1 = very poor, 5 = very good)",
+      "type": "scale",
+      "min": 1,
+      "max": 5,
+      "required": false,
+      "safety_critical": false
+    },
+    {
+      "id": "free_text",
+      "text": "Anything else you want your care team to know? (optional)",
+      "type": "text",
+      "required": false,
+      "safety_critical": false
+    }
+  ],
+  "required_profile_fields": [
+    {
+      "key": "allergy_status",
+      "label": "Allergy status",
+      "critical": true,
+      "requires_verification": true
+    },
+    {
+      "key": "egfr",
+      "label": "Kidney function (eGFR)",
+      "critical": true,
+      "requires_verification": true,
+      "unit": "mL/min/1.73m²"
+    },
+    {
+      "key": "pregnancy_status",
+      "label": "Pregnancy status (where applicable)",
+      "critical": true,
+      "requires_verification": false
+    },
+    {
+      "key": "diagnosis_confirmation",
+      "label": "Diagnosis confirmation",
+      "critical": false,
+      "requires_verification": false
+    }
+  ],
+  "measure_definitions": [
+    {
+      "concept": "bp_systolic",
+      "label": "Systolic blood pressure",
+      "canonical_unit": "mmHg",
+      "units": {
+        "mmHg": 1,
+        "kPa": 7.50062
+      },
+      "plausible_min": 50,
+      "plausible_max": 300
+    },
+    {
+      "concept": "bp_diastolic",
+      "label": "Diastolic blood pressure",
+      "canonical_unit": "mmHg",
+      "units": {
+        "mmHg": 1,
+        "kPa": 7.50062
+      },
+      "plausible_min": 30,
+      "plausible_max": 200
+    }
+  ],
+  "derived_measures": [
+    {
+      "id": "pulse_pressure",
+      "label": "Systolic minus diastolic",
+      "op": "diff",
+      "of": [
+        "obs.bp_systolic",
+        "obs.bp_diastolic"
+      ]
+    }
+  ],
+  "consistency_rules": [
+    {
+      "id": "HTN-C1",
+      "when": {
+        "op": "cmp",
+        "field": "derived.pulse_pressure",
+        "cmp": "lte",
+        "value": 0
+      },
+      "message": "systolic is not higher than diastolic — possible entry error"
+    }
+  ],
+  "red_flag_rules": [
+    {
+      "id": "HTN-U1",
+      "label": "Chest or stroke-like symptom",
+      "when": {
+        "op": "or",
+        "any": [
+          {
+            "op": "cmp",
+            "field": "answers.sx_chest",
+            "cmp": "eq",
+            "value": true
+          },
+          {
+            "op": "cmp",
+            "field": "answers.sx_neuro",
+            "cmp": "eq",
+            "value": true
+          }
+        ]
+      },
+      "state": "URGENT",
+      "patient_message_id": "htn_urgent",
+      "rationale": "Structured symptom red flag (chest or neurological symptom). Demo rule, not clinically validated."
+    },
+    {
+      "id": "HTN-U2",
+      "label": "Very high BP with severe headache/vision change",
+      "when": {
+        "op": "and",
+        "all": [
+          {
+            "op": "cmp",
+            "field": "obs.bp_systolic",
+            "cmp": "gte",
+            "value": 180
+          },
+          {
+            "op": "cmp",
+            "field": "answers.sx_headache_vision",
+            "cmp": "eq",
+            "value": true
+          }
+        ]
+      },
+      "state": "URGENT",
+      "patient_message_id": "htn_urgent",
+      "rationale": "Symptom + measurement combination (T03). Demo threshold, not clinically validated."
+    },
+    {
+      "id": "HTN-P1",
+      "label": "Elevated BP",
+      "when": {
+        "op": "or",
+        "any": [
+          {
+            "op": "cmp",
+            "field": "obs.bp_systolic",
+            "cmp": "gte",
+            "value": 160
+          },
+          {
+            "op": "cmp",
+            "field": "obs.bp_diastolic",
+            "cmp": "gte",
+            "value": 100
+          }
+        ]
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "BP above demo review threshold (160/100). Demo threshold, not clinically validated."
+    },
+    {
+      "id": "HTN-P2",
+      "label": "Low BP",
+      "when": {
+        "op": "cmp",
+        "field": "obs.bp_systolic",
+        "cmp": "lt",
+        "value": 90
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "Systolic below demo review threshold (90). Demo threshold, not clinically validated."
+    },
+    {
+      "id": "HTN-P3",
+      "label": "Several missed doses",
+      "when": {
+        "op": "cmp",
+        "field": "answers.missed_doses",
+        "cmp": "gte",
+        "value": 4
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "4 or more missed doses in 7 days. Demo threshold."
+    },
+    {
+      "id": "HTN-P4",
+      "label": "Severe headache / vision change",
+      "when": {
+        "op": "cmp",
+        "field": "answers.sx_headache_vision",
+        "cmp": "eq",
+        "value": true
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "Reported severe headache or vision change."
+    }
+  ],
+  "free_text_keywords": [
+    {
+      "id": "HTN-FT1",
+      "pattern": "chest pain|can'?t breathe|faint|collapsed|stroke",
+      "state": "PROMPT_REVIEW"
+    }
+  ],
+  "patient_messages": {
+    "htn_urgent": "Your answers include a symptom that needs urgent attention. Call your local emergency number now or go to the nearest emergency department. Do not drive yourself if you feel unwell."
+  },
+  "treatment_option_cards": [
+    {
+      "id": "htn_acei_arb",
+      "label": "ACE inhibitor or ARB class",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Adult hypertension, first-line class considered in many frameworks (illustrative).",
+      "why_relevant": "Commonly considered class; relevant where kidney or cardiovascular comorbidity is present (illustrative).",
+      "why_may_not_suit": "Not suitable in pregnancy or with documented class allergy; kidney function and potassium need review.",
+      "considerations": [
+        "Kidney function and potassium monitoring needs",
+        "Tolerability (e.g. cough with some agents)",
+        "Cost and access"
+      ],
+      "requires_fields": [
+        "egfr",
+        "pregnancy_status"
+      ],
+      "hard_exclusions": [
+        {
+          "id": "ex_preg",
+          "when": {
+            "op": "cmp",
+            "field": "profile.pregnancy_status",
+            "cmp": "eq",
+            "value": true
+          },
+          "reason": "Pregnancy status positive (verified)"
+        },
+        {
+          "id": "ex_allergy",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "ace_inhibitor"
+          },
+          "reason": "Documented allergy to ACE inhibitor class"
+        },
+        {
+          "id": "ex_allergy2",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "arb"
+          },
+          "reason": "Documented allergy to ARB class"
+        }
+      ],
+      "cautions": [
+        {
+          "id": "ca_renal",
+          "when": {
+            "op": "cmp",
+            "field": "profile.egfr",
+            "cmp": "lt",
+            "value": 45
+          },
+          "note": "Reduced eGFR — clinician to review kidney function before considering"
+        }
+      ],
+      "preference_effects": [],
+      "evidence": [
+        {
+          "guideline_source_id": "ph-htn-slot",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "Unspecified (demo)",
+          "rationale": "Illustrative placeholder rationale: class commonly considered in adult hypertension; pending clinical review.",
+          "applicable_population": "Adults with hypertension"
+        }
+      ]
+    },
+    {
+      "id": "htn_ccb",
+      "label": "Calcium channel blocker class",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Adult hypertension, class considered in many frameworks (illustrative).",
+      "why_relevant": "Often considered where ACEi/ARB are unsuitable (illustrative).",
+      "why_may_not_suit": "Ankle swelling is a common tolerability issue; documented class allergy excludes.",
+      "considerations": [
+        "Tolerability (swelling)",
+        "Interactions with other medicines (coverage is limited)"
+      ],
+      "requires_fields": [],
+      "hard_exclusions": [
+        {
+          "id": "ex_allergy",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "ccb"
+          },
+          "reason": "Documented allergy to calcium channel blocker class"
+        }
+      ],
+      "cautions": [
+        {
+          "id": "ca_hf",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "heart_failure"
+          },
+          "note": "Heart failure on record — clinician to review suitability"
+        }
+      ],
+      "preference_effects": [],
+      "evidence": [
+        {
+          "guideline_source_id": "ph-htn-slot",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "Unspecified (demo)",
+          "rationale": "Illustrative placeholder rationale: class commonly considered in adult hypertension; pending clinical review.",
+          "applicable_population": "Adults with hypertension"
+        }
+      ]
+    },
+    {
+      "id": "htn_thiazide",
+      "label": "Thiazide-type diuretic class",
+      "illustrative": true,
+      "evidence_category": 2,
+      "indication_context": "Adult hypertension (illustrative).",
+      "why_relevant": "Commonly considered class (illustrative).",
+      "why_may_not_suit": "Electrolyte and kidney considerations; gout history; documented class allergy excludes.",
+      "considerations": [
+        "Electrolyte monitoring",
+        "Gout history",
+        "Kidney function"
+      ],
+      "requires_fields": [
+        "egfr"
+      ],
+      "hard_exclusions": [
+        {
+          "id": "ex_allergy",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "thiazide"
+          },
+          "reason": "Documented allergy to thiazide-type class"
+        }
+      ],
+      "cautions": [
+        {
+          "id": "ca_gout",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "gout"
+          },
+          "note": "Gout on record — clinician to review"
+        },
+        {
+          "id": "ca_renal",
+          "when": {
+            "op": "cmp",
+            "field": "profile.egfr",
+            "cmp": "lt",
+            "value": 30
+          },
+          "note": "Markedly reduced eGFR — clinician to review"
+        }
+      ],
+      "preference_effects": [],
+      "evidence": [
+        {
+          "guideline_source_id": "ph-htn-slot",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "Unspecified (demo)",
+          "rationale": "Illustrative placeholder rationale: class commonly considered in adult hypertension; pending clinical review.",
+          "applicable_population": "Adults with hypertension"
+        }
+      ]
+    },
+    {
+      "id": "htn_lifestyle",
+      "label": "Lifestyle and home-monitoring support",
+      "option_type": "non_drug",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Adjunct for adult hypertension (illustrative).",
+      "why_relevant": "Non-drug support that can accompany any plan (illustrative).",
+      "why_may_not_suit": "Not a substitute for clinician review of elevated readings.",
+      "considerations": [
+        "Home BP monitoring technique and device validation",
+        "Patient preferences and access"
+      ],
+      "requires_fields": [],
+      "hard_exclusions": [],
+      "cautions": [],
+      "preference_effects": [
+        {
+          "preference": "avoid_medication",
+          "effect": "aligns",
+          "note": "Aligns with stated preference to minimise medication"
+        }
+      ],
+      "evidence": [
+        {
+          "guideline_source_id": "ph-htn-slot",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "Unspecified (demo)",
+          "rationale": "Illustrative placeholder rationale; pending clinical review.",
+          "applicable_population": "Adults with hypertension"
+        }
+      ]
+    }
+  ],
+  "interaction_coverage": [
+    "ace_inhibitor",
+    "arb",
+    "ccb",
+    "thiazide",
+    "beta_blocker"
+  ],
+  "drug_gene_evidence": [],
+  "outcome_definitions": [
+    {
+      "id": "bp_controlled_8w",
+      "label": "BP below demo target at 8 weeks",
+      "window_weeks": 8,
+      "definition": "Mean systolic below 140 mmHg at the 8-week check (demo definition, not clinically validated)"
+    }
+  ],
+  "trial_search_terms": [
+    "hypertension",
+    "blood pressure"
+  ]
+}

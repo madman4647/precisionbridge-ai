@@ -1,0 +1,25 @@
+/** Idempotent bootstrap DDL, kept in sync with schema.ts. One statement per entry (Neon HTTP runs one at a time). */
+export const DDL: string[] = [
+  `CREATE TABLE IF NOT EXISTS patients (id text PRIMARY KEY, module_id text NOT NULL, condition_code text NOT NULL, clinician_id text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS consents (id text PRIMARY KEY, patient_id text NOT NULL, kind text NOT NULL, granted boolean NOT NULL, at text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS checkins (id text PRIMARY KEY, patient_id text NOT NULL, created_at text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS risk_evaluations (id text PRIMARY KEY, checkin_id text NOT NULL, patient_id text NOT NULL, state text NOT NULL, evaluated_at text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS alerts (id text PRIMARY KEY, patient_id text NOT NULL, checkin_id text NOT NULL, state text NOT NULL, status text NOT NULL, created_at text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS comparisons (id text PRIMARY KEY, patient_id text NOT NULL, evaluation_id text NOT NULL, review_state text NOT NULL, created_at text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS decisions (id text PRIMARY KEY, patient_id text NOT NULL, comparison_id text, action text NOT NULL, signed_at text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS care_plans (id text PRIMARY KEY, patient_id text NOT NULL, version integer NOT NULL, signed_at text NOT NULL, data jsonb NOT NULL, UNIQUE (patient_id, version))`,
+  `CREATE TABLE IF NOT EXISTS followups (id text PRIMARY KEY, patient_id text NOT NULL, plan_version integer NOT NULL, created_at text NOT NULL, reviewed boolean NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS module_versions (id text PRIMARY KEY, module_id text NOT NULL, version text NOT NULL, status text NOT NULL, created_at text NOT NULL, data jsonb NOT NULL, UNIQUE (module_id, version))`,
+  `CREATE TABLE IF NOT EXISTS research_records (id text PRIMARY KEY, patient_id text NOT NULL, condition_code text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS cohorts (id text PRIMARY KEY, hash text NOT NULL, created_by text NOT NULL, created_at text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS hypotheses (id text PRIMARY KEY, cohort_hash text NOT NULL, status text NOT NULL, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS audit_events (id text PRIMARY KEY, ts text NOT NULL, actor_id text NOT NULL, actor_role text NOT NULL, action text NOT NULL, outcome text NOT NULL, resource_id text, data jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS settings (key text PRIMARY KEY, data jsonb NOT NULL)`,
+  `CREATE INDEX IF NOT EXISTS idx_checkins_patient ON checkins (patient_id, created_at)`,
+  `CREATE INDEX IF NOT EXISTS idx_consents_patient ON consents (patient_id, at)`,
+  `CREATE INDEX IF NOT EXISTS idx_alerts_patient ON alerts (patient_id, status)`,
+  `CREATE INDEX IF NOT EXISTS idx_audit_ts ON audit_events (ts)`,
+  `CREATE INDEX IF NOT EXISTS idx_audit_action ON audit_events (action, outcome)`,
+  `CREATE INDEX IF NOT EXISTS idx_riskeval_patient ON risk_evaluations (patient_id, evaluated_at)`,
+];
+export const TABLE_NAMES = ["audit_events", "settings", "hypotheses", "cohorts", "research_records", "module_versions", "followups", "care_plans", "decisions", "comparisons", "alerts", "risk_evaluations", "checkins", "consents", "patients"];

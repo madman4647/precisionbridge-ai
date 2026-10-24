@@ -1,0 +1,735 @@
+{
+  "last_evidence_review": "2026-09-15",
+  "clinical_approver": {
+    "name": "UNSIGNED — illustrative placeholder (no qualified clinician has reviewed)",
+    "role": "Clinical reviewer (to be assigned)",
+    "signed_off_at": "2026-09-15",
+    "illustrative_placeholder": true
+  },
+  "effective_status": "active",
+  "illustrative_content_notice": "Illustrative content — pending clinical review",
+  "validation_case_ids": [],
+  "module_id": "depression",
+  "module_version": "1.0.0",
+  "display_name": "Depression",
+  "condition_code": "DEP",
+  "population_scope": "Adults with a primary diagnosis of depression (synthetic demo)",
+  "guideline_sources": [
+    {
+      "id": "nice-ng222",
+      "title": "Depression in adults: treatment and management (NG222)",
+      "publisher": "NICE",
+      "published": "2022",
+      "jurisdiction": "UK (England)",
+      "url": "https://www.nice.org.uk/guidance/ng222/chapter/Recommendations",
+      "review_by": "2027-12-31",
+      "note": "Referenced by id/title/date only; no recommendation text is quoted."
+    },
+    {
+      "id": "cpic-ssri-2023",
+      "title": "CPIC guideline for serotonin reuptake inhibitor antidepressants and CYP2D6, CYP2C19, CYP2B6",
+      "publisher": "Clinical Pharmacogenetics Implementation Consortium",
+      "published": "2023",
+      "jurisdiction": "International",
+      "url": "https://files.cpicpgx.org/data/guideline/publication/serotonin_reuptake_inhibitor_antidepressants/2023/37032427.pdf",
+      "review_by": "2027-12-31",
+      "note": "Guideline explains how to use available genotypes, not whether to order a test."
+    }
+  ],
+  "checkin_question_schema": [
+    {
+      "id": "phq9_1",
+      "text": "PHQ-9 item 1: Over the last 2 weeks, how often have you been bothered by: little interest or pleasure in doing things",
+      "type": "choice",
+      "choices": [
+        {
+          "value": "0",
+          "label": "Not at all"
+        },
+        {
+          "value": "1",
+          "label": "Several days"
+        },
+        {
+          "value": "2",
+          "label": "More than half the days"
+        },
+        {
+          "value": "3",
+          "label": "Nearly every day"
+        }
+      ],
+      "min": 0,
+      "max": 3,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "phq9_2",
+      "text": "PHQ-9 item 2: Over the last 2 weeks, how often have you been bothered by: feeling down, depressed, or hopeless",
+      "type": "choice",
+      "choices": [
+        {
+          "value": "0",
+          "label": "Not at all"
+        },
+        {
+          "value": "1",
+          "label": "Several days"
+        },
+        {
+          "value": "2",
+          "label": "More than half the days"
+        },
+        {
+          "value": "3",
+          "label": "Nearly every day"
+        }
+      ],
+      "min": 0,
+      "max": 3,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "phq9_3",
+      "text": "PHQ-9 item 3: Over the last 2 weeks, how often have you been bothered by: trouble falling or staying asleep, or sleeping too much",
+      "type": "choice",
+      "choices": [
+        {
+          "value": "0",
+          "label": "Not at all"
+        },
+        {
+          "value": "1",
+          "label": "Several days"
+        },
+        {
+          "value": "2",
+          "label": "More than half the days"
+        },
+        {
+          "value": "3",
+          "label": "Nearly every day"
+        }
+      ],
+      "min": 0,
+      "max": 3,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "phq9_4",
+      "text": "PHQ-9 item 4: Over the last 2 weeks, how often have you been bothered by: feeling tired or having little energy",
+      "type": "choice",
+      "choices": [
+        {
+          "value": "0",
+          "label": "Not at all"
+        },
+        {
+          "value": "1",
+          "label": "Several days"
+        },
+        {
+          "value": "2",
+          "label": "More than half the days"
+        },
+        {
+          "value": "3",
+          "label": "Nearly every day"
+        }
+      ],
+      "min": 0,
+      "max": 3,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "phq9_5",
+      "text": "PHQ-9 item 5: Over the last 2 weeks, how often have you been bothered by: poor appetite or overeating",
+      "type": "choice",
+      "choices": [
+        {
+          "value": "0",
+          "label": "Not at all"
+        },
+        {
+          "value": "1",
+          "label": "Several days"
+        },
+        {
+          "value": "2",
+          "label": "More than half the days"
+        },
+        {
+          "value": "3",
+          "label": "Nearly every day"
+        }
+      ],
+      "min": 0,
+      "max": 3,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "phq9_6",
+      "text": "PHQ-9 item 6: Over the last 2 weeks, how often have you been bothered by: feeling bad about yourself, or that you are a failure",
+      "type": "choice",
+      "choices": [
+        {
+          "value": "0",
+          "label": "Not at all"
+        },
+        {
+          "value": "1",
+          "label": "Several days"
+        },
+        {
+          "value": "2",
+          "label": "More than half the days"
+        },
+        {
+          "value": "3",
+          "label": "Nearly every day"
+        }
+      ],
+      "min": 0,
+      "max": 3,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "phq9_7",
+      "text": "PHQ-9 item 7: Over the last 2 weeks, how often have you been bothered by: trouble concentrating",
+      "type": "choice",
+      "choices": [
+        {
+          "value": "0",
+          "label": "Not at all"
+        },
+        {
+          "value": "1",
+          "label": "Several days"
+        },
+        {
+          "value": "2",
+          "label": "More than half the days"
+        },
+        {
+          "value": "3",
+          "label": "Nearly every day"
+        }
+      ],
+      "min": 0,
+      "max": 3,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "phq9_8",
+      "text": "PHQ-9 item 8: Over the last 2 weeks, how often have you been bothered by: moving or speaking noticeably slowly, or being restless",
+      "type": "choice",
+      "choices": [
+        {
+          "value": "0",
+          "label": "Not at all"
+        },
+        {
+          "value": "1",
+          "label": "Several days"
+        },
+        {
+          "value": "2",
+          "label": "More than half the days"
+        },
+        {
+          "value": "3",
+          "label": "Nearly every day"
+        }
+      ],
+      "min": 0,
+      "max": 3,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "phq9_9",
+      "text": "PHQ-9 item 9: Over the last 2 weeks, how often have you been bothered by: thoughts that you would be better off dead, or of hurting yourself in some way",
+      "type": "choice",
+      "choices": [
+        {
+          "value": "0",
+          "label": "Not at all"
+        },
+        {
+          "value": "1",
+          "label": "Several days"
+        },
+        {
+          "value": "2",
+          "label": "More than half the days"
+        },
+        {
+          "value": "3",
+          "label": "Nearly every day"
+        }
+      ],
+      "min": 0,
+      "max": 3,
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "selfharm_now",
+      "text": "Are you thinking about harming yourself or ending your life right now, or do you have a plan or intent to?",
+      "type": "boolean",
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "missed_doses",
+      "text": "In the last 7 days, how many doses did you miss? (No judgement — this helps your care team.)",
+      "type": "number",
+      "min": 0,
+      "max": 7,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "side_effects",
+      "text": "Any side effects you've noticed?",
+      "type": "multi",
+      "choices": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "nausea",
+          "label": "Nausea"
+        },
+        {
+          "value": "agitation",
+          "label": "Agitation or feeling wired"
+        },
+        {
+          "value": "sleep",
+          "label": "Sleep changes"
+        },
+        {
+          "value": "sexual",
+          "label": "Sexual side effects"
+        },
+        {
+          "value": "other",
+          "label": "Other"
+        }
+      ],
+      "required": false,
+      "safety_critical": false
+    },
+    {
+      "id": "free_text",
+      "text": "Anything else you want your care team to know? (optional)",
+      "type": "text",
+      "required": false,
+      "safety_critical": false
+    }
+  ],
+  "required_profile_fields": [
+    {
+      "key": "allergy_status",
+      "label": "Allergy status",
+      "critical": true,
+      "requires_verification": true
+    },
+    {
+      "key": "bipolar_screen",
+      "label": "History of mania / bipolar screening",
+      "critical": true,
+      "requires_verification": true
+    },
+    {
+      "key": "pregnancy_status",
+      "label": "Pregnancy status (where applicable)",
+      "critical": true,
+      "requires_verification": false
+    }
+  ],
+  "measure_definitions": [],
+  "derived_measures": [
+    {
+      "id": "phq9_total",
+      "label": "PHQ-9 total",
+      "op": "sum",
+      "of": [
+        "answers.phq9_1",
+        "answers.phq9_2",
+        "answers.phq9_3",
+        "answers.phq9_4",
+        "answers.phq9_5",
+        "answers.phq9_6",
+        "answers.phq9_7",
+        "answers.phq9_8",
+        "answers.phq9_9"
+      ]
+    }
+  ],
+  "consistency_rules": [
+    {
+      "id": "DEP-C1",
+      "when": {
+        "op": "and",
+        "all": [
+          {
+            "op": "cmp",
+            "field": "answers.phq9_9",
+            "cmp": "eq",
+            "value": 0
+          },
+          {
+            "op": "cmp",
+            "field": "answers.selfharm_now",
+            "cmp": "eq",
+            "value": true
+          }
+        ]
+      },
+      "message": "item 9 reported 0 but direct self-harm question is positive"
+    }
+  ],
+  "red_flag_rules": [
+    {
+      "id": "DEP-U1",
+      "label": "Immediate self-harm danger (direct question)",
+      "when": {
+        "op": "cmp",
+        "field": "answers.selfharm_now",
+        "cmp": "eq",
+        "value": true
+      },
+      "state": "URGENT",
+      "patient_message_id": "dep_urgent",
+      "rationale": "Structured direct self-harm question positive. Human-led safety response required. Demo rule."
+    },
+    {
+      "id": "DEP-U2",
+      "label": "PHQ-9 item 9 ≥ 2",
+      "when": {
+        "op": "cmp",
+        "field": "answers.phq9_9",
+        "cmp": "gte",
+        "value": 2
+      },
+      "state": "URGENT",
+      "patient_message_id": "dep_urgent",
+      "rationale": "Item 9 'more than half the days' or higher. Demo threshold, not clinically validated."
+    },
+    {
+      "id": "DEP-P1",
+      "label": "PHQ-9 item 9 positive",
+      "when": {
+        "op": "cmp",
+        "field": "answers.phq9_9",
+        "cmp": "gte",
+        "value": 1
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "dep_support",
+      "rationale": "Item 9 'several days'. Structured human-care pathway and help information shown. Demo threshold."
+    },
+    {
+      "id": "DEP-P2",
+      "label": "Severe symptom score",
+      "when": {
+        "op": "cmp",
+        "field": "derived.phq9_total",
+        "cmp": "gte",
+        "value": 20
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "PHQ-9 total ≥ 20. Demo threshold."
+    },
+    {
+      "id": "DEP-P3",
+      "label": "Activation / agitation side effect",
+      "when": {
+        "op": "includes",
+        "field": "answers.side_effects",
+        "value": "agitation"
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "Reported agitation side effect warrants timely review."
+    },
+    {
+      "id": "DEP-P4",
+      "label": "Several missed doses",
+      "when": {
+        "op": "cmp",
+        "field": "answers.missed_doses",
+        "cmp": "gte",
+        "value": 4
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "4 or more missed doses in 7 days. Demo threshold."
+    }
+  ],
+  "free_text_keywords": [
+    {
+      "id": "DEP-FT1",
+      "pattern": "suicid|kill myself|end my life|self[- ]?harm|overdose|better off dead",
+      "state": "PROMPT_REVIEW"
+    }
+  ],
+  "patient_messages": {
+    "dep_urgent": "You told us something that needs a person to help you right away. You do not have to manage this alone. Please contact emergency services or a crisis line now and stay with someone you trust.",
+    "dep_support": "Thank you for telling us. Thoughts of harming yourself matter. A clinician will review your check-in. If these thoughts get stronger or you feel you might act on them, contact emergency services or a crisis line straight away."
+  },
+  "treatment_option_cards": [
+    {
+      "id": "dep_ssri",
+      "label": "SSRI class",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Adult depression, commonly considered antidepressant class (illustrative).",
+      "why_relevant": "Widely used class with long clinical experience (illustrative).",
+      "why_may_not_suit": "Documented class allergy; activation or sexual side effects; interaction review needed.",
+      "considerations": [
+        "Side-effect priorities (sexual, sleep, activation)",
+        "Interactions (coverage limited)",
+        "Early monitoring after any change, led by clinician"
+      ],
+      "requires_fields": [
+        "bipolar_screen"
+      ],
+      "hard_exclusions": [
+        {
+          "id": "ex_allergy",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "ssri"
+          },
+          "reason": "Documented allergy to SSRI class"
+        }
+      ],
+      "cautions": [
+        {
+          "id": "ca_preg",
+          "when": {
+            "op": "cmp",
+            "field": "profile.pregnancy_status",
+            "cmp": "eq",
+            "value": true
+          },
+          "note": "Pregnancy status positive — specialist review"
+        }
+      ],
+      "preference_effects": [
+        {
+          "preference": "avoid_sexual_side_effects",
+          "effect": "conflicts",
+          "note": "Sexual side effects are a recognised tolerability issue for the class"
+        }
+      ],
+      "evidence": [
+        {
+          "guideline_source_id": "nice-ng222",
+          "published": "2022",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "UK (England)",
+          "rationale": "Illustrative rationale: class considered for adult depression; pending clinical review.",
+          "applicable_population": "Adults with depression"
+        }
+      ]
+    },
+    {
+      "id": "dep_snri",
+      "label": "SNRI class",
+      "illustrative": true,
+      "evidence_category": 2,
+      "indication_context": "Adult depression (illustrative).",
+      "why_relevant": "Alternative class where another has not suited (illustrative).",
+      "why_may_not_suit": "Can raise blood pressure; discontinuation symptoms; class allergy.",
+      "considerations": [
+        "Blood pressure monitoring",
+        "Tolerability"
+      ],
+      "requires_fields": [
+        "bipolar_screen"
+      ],
+      "hard_exclusions": [
+        {
+          "id": "ex_allergy",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "snri"
+          },
+          "reason": "Documented allergy to SNRI class"
+        }
+      ],
+      "cautions": [
+        {
+          "id": "ca_htn",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "hypertension"
+          },
+          "note": "Hypertension on record — BP effects need clinician review"
+        }
+      ],
+      "preference_effects": [],
+      "evidence": [
+        {
+          "guideline_source_id": "nice-ng222",
+          "published": "2022",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "UK (England)",
+          "rationale": "Illustrative rationale: alternative class for adult depression; pending clinical review.",
+          "applicable_population": "Adults with depression"
+        }
+      ]
+    },
+    {
+      "id": "dep_ndri",
+      "label": "Bupropion-type (NDRI) class",
+      "illustrative": true,
+      "evidence_category": 3,
+      "indication_context": "Adult depression (illustrative).",
+      "why_relevant": "Different side-effect profile; may suit those prioritising avoiding sexual side effects (illustrative).",
+      "why_may_not_suit": "Seizure disorder and eating disorders are important exclusions.",
+      "considerations": [
+        "Seizure risk review",
+        "Sleep and anxiety effects"
+      ],
+      "requires_fields": [],
+      "hard_exclusions": [
+        {
+          "id": "ex_seizure",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "seizure_disorder"
+          },
+          "reason": "Seizure disorder on record (verified)"
+        },
+        {
+          "id": "ex_ed",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "eating_disorder"
+          },
+          "reason": "Eating disorder on record (verified)"
+        }
+      ],
+      "cautions": [],
+      "preference_effects": [
+        {
+          "preference": "avoid_sexual_side_effects",
+          "effect": "aligns",
+          "note": "Lower reported sexual side-effect burden (illustrative)"
+        }
+      ],
+      "evidence": [
+        {
+          "guideline_source_id": "nice-ng222",
+          "published": "2022",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "UK (England)",
+          "rationale": "Illustrative rationale: alternative class for adult depression; pending clinical review.",
+          "applicable_population": "Adults with depression"
+        }
+      ]
+    },
+    {
+      "id": "dep_psychotherapy",
+      "label": "Psychological therapy referral (CBT-type)",
+      "option_type": "non_drug",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Adult depression (illustrative).",
+      "why_relevant": "Non-drug option that can be offered alone or alongside medication (illustrative).",
+      "why_may_not_suit": "Access and waiting times; patient preference.",
+      "considerations": [
+        "Local availability",
+        "Patient preference"
+      ],
+      "requires_fields": [],
+      "hard_exclusions": [],
+      "cautions": [],
+      "preference_effects": [
+        {
+          "preference": "avoid_medication",
+          "effect": "aligns",
+          "note": "Aligns with stated preference to avoid medication"
+        }
+      ],
+      "evidence": [
+        {
+          "guideline_source_id": "nice-ng222",
+          "published": "2022",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "UK (England)",
+          "rationale": "Illustrative rationale: non-drug option for adult depression; pending clinical review.",
+          "applicable_population": "Adults with depression"
+        }
+      ]
+    }
+  ],
+  "interaction_coverage": [
+    "ssri",
+    "snri",
+    "ndri",
+    "benzodiazepine"
+  ],
+  "drug_gene_evidence": [
+    {
+      "option_id": "dep_ssri",
+      "gene": "CYP2C19",
+      "guideline_source_id": "cpic-ssri-2023",
+      "actionable_phenotypes": [
+        "poor_metabolizer",
+        "ultrarapid_metabolizer"
+      ],
+      "statement": "This drug–gene pair is listed in the cited guideline; consult the guideline for phenotype-specific considerations."
+    },
+    {
+      "option_id": "dep_ssri",
+      "gene": "CYP2D6",
+      "guideline_source_id": "cpic-ssri-2023",
+      "actionable_phenotypes": [
+        "poor_metabolizer",
+        "ultrarapid_metabolizer"
+      ],
+      "statement": "This drug–gene pair is listed in the cited guideline; consult the guideline for phenotype-specific considerations."
+    },
+    {
+      "option_id": "dep_ssri",
+      "gene": "CYP2B6",
+      "guideline_source_id": "cpic-ssri-2023",
+      "actionable_phenotypes": [
+        "poor_metabolizer"
+      ],
+      "statement": "This drug–gene pair is listed in the cited guideline; consult the guideline for phenotype-specific considerations."
+    }
+  ],
+  "outcome_definitions": [
+    {
+      "id": "phq9_response_8w",
+      "label": "PHQ-9 response at 8 weeks",
+      "window_weeks": 8,
+      "definition": "At least 50% reduction in PHQ-9 total from baseline at 8 weeks (demo definition)"
+    }
+  ],
+  "trial_search_terms": [
+    "major depressive disorder",
+    "depression"
+  ]
+}

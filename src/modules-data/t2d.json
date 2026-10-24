@@ -1,0 +1,584 @@
+{
+  "last_evidence_review": "2026-09-15",
+  "clinical_approver": {
+    "name": "UNSIGNED — illustrative placeholder (no qualified clinician has reviewed)",
+    "role": "Clinical reviewer (to be assigned)",
+    "signed_off_at": "2026-09-15",
+    "illustrative_placeholder": true
+  },
+  "effective_status": "active",
+  "illustrative_content_notice": "Illustrative content — pending clinical review",
+  "validation_case_ids": [],
+  "module_id": "t2d",
+  "module_version": "1.0.0",
+  "display_name": "Type 2 diabetes",
+  "condition_code": "T2D",
+  "population_scope": "Adults with a primary diagnosis of type 2 diabetes (synthetic demo)",
+  "guideline_sources": [
+    {
+      "id": "ada-soc-2026",
+      "title": "Standards of Care in Diabetes—2026 (pharmacologic approaches)",
+      "publisher": "American Diabetes Association",
+      "published": "2026",
+      "jurisdiction": "US / international",
+      "url": "https://diabetesjournals.org/care/article/49/Supplement_1/S183/163934/",
+      "review_by": "2027-12-31",
+      "note": "Referenced by id/title/date only; no recommendation text is quoted."
+    }
+  ],
+  "checkin_question_schema": [
+    {
+      "id": "glucose",
+      "text": "Your most recent blood glucose reading (if you measured one)",
+      "type": "number",
+      "concept": "glucose",
+      "unit": "mg/dL",
+      "allowed_units": [
+        "mg/dL",
+        "mmol/L"
+      ],
+      "min": 1,
+      "max": 1000,
+      "required": false,
+      "safety_critical": false
+    },
+    {
+      "id": "sx_severe_hypo",
+      "text": "Have you had severe low-sugar symptoms (confusion, fainting, or needing someone else's help)?",
+      "type": "boolean",
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "sx_vomit",
+      "text": "Are you vomiting, unable to keep fluids down, or feeling very unwell?",
+      "type": "boolean",
+      "required": true,
+      "safety_critical": true
+    },
+    {
+      "id": "sx_mild_hypo",
+      "text": "Have you had shaky/sweaty low-sugar episodes that you treated yourself this week?",
+      "type": "boolean",
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "missed_doses",
+      "text": "In the last 7 days, how many doses did you miss? (No judgement — this helps your care team.)",
+      "type": "number",
+      "min": 0,
+      "max": 7,
+      "required": true,
+      "safety_critical": false
+    },
+    {
+      "id": "side_effects",
+      "text": "Any side effects you've noticed?",
+      "type": "multi",
+      "choices": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "nausea",
+          "label": "Nausea"
+        },
+        {
+          "value": "diarrhoea",
+          "label": "Diarrhoea"
+        },
+        {
+          "value": "genital_irritation",
+          "label": "Genital irritation"
+        },
+        {
+          "value": "other",
+          "label": "Other"
+        }
+      ],
+      "required": false,
+      "safety_critical": false
+    },
+    {
+      "id": "wellbeing",
+      "text": "Overall, how are you feeling today? (1 = very poor, 5 = very good)",
+      "type": "scale",
+      "min": 1,
+      "max": 5,
+      "required": false,
+      "safety_critical": false
+    },
+    {
+      "id": "free_text",
+      "text": "Anything else you want your care team to know? (optional)",
+      "type": "text",
+      "required": false,
+      "safety_critical": false
+    }
+  ],
+  "required_profile_fields": [
+    {
+      "key": "allergy_status",
+      "label": "Allergy status",
+      "critical": true,
+      "requires_verification": true
+    },
+    {
+      "key": "egfr",
+      "label": "Kidney function (eGFR)",
+      "critical": true,
+      "requires_verification": true,
+      "unit": "mL/min/1.73m²"
+    },
+    {
+      "key": "hba1c",
+      "label": "HbA1c",
+      "critical": false,
+      "requires_verification": false,
+      "unit": "mmol/mol"
+    }
+  ],
+  "measure_definitions": [
+    {
+      "concept": "glucose",
+      "label": "Blood glucose",
+      "canonical_unit": "mg/dL",
+      "units": {
+        "mg/dL": 1,
+        "mmol/L": 18.016
+      },
+      "plausible_min": 20,
+      "plausible_max": 900
+    }
+  ],
+  "derived_measures": [],
+  "consistency_rules": [],
+  "red_flag_rules": [
+    {
+      "id": "T2D-U1",
+      "label": "Severe low-glucose symptoms",
+      "when": {
+        "op": "cmp",
+        "field": "answers.sx_severe_hypo",
+        "cmp": "eq",
+        "value": true
+      },
+      "state": "URGENT",
+      "patient_message_id": "t2d_urgent",
+      "rationale": "Structured severe hypoglycaemia symptom. Demo rule, not clinically validated."
+    },
+    {
+      "id": "T2D-U2",
+      "label": "Very low glucose reading",
+      "when": {
+        "op": "cmp",
+        "field": "obs.glucose",
+        "cmp": "lt",
+        "value": 54
+      },
+      "state": "URGENT",
+      "patient_message_id": "t2d_urgent",
+      "rationale": "Glucose below demo urgent threshold (54 mg/dL). Demo threshold, not clinically validated."
+    },
+    {
+      "id": "T2D-U3",
+      "label": "Very high glucose with vomiting",
+      "when": {
+        "op": "and",
+        "all": [
+          {
+            "op": "cmp",
+            "field": "obs.glucose",
+            "cmp": "gte",
+            "value": 400
+          },
+          {
+            "op": "cmp",
+            "field": "answers.sx_vomit",
+            "cmp": "eq",
+            "value": true
+          }
+        ]
+      },
+      "state": "URGENT",
+      "patient_message_id": "t2d_urgent",
+      "rationale": "Possible acute metabolic illness (high glucose + vomiting). Demo threshold."
+    },
+    {
+      "id": "T2D-P1",
+      "label": "Low glucose reading",
+      "when": {
+        "op": "cmp",
+        "field": "obs.glucose",
+        "cmp": "lt",
+        "value": 70
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "Glucose below demo review threshold (70 mg/dL). Demo threshold."
+    },
+    {
+      "id": "T2D-P2",
+      "label": "High glucose reading",
+      "when": {
+        "op": "cmp",
+        "field": "obs.glucose",
+        "cmp": "gte",
+        "value": 300
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "Glucose above demo review threshold (300 mg/dL). Demo threshold."
+    },
+    {
+      "id": "T2D-P3",
+      "label": "Vomiting / very unwell",
+      "when": {
+        "op": "cmp",
+        "field": "answers.sx_vomit",
+        "cmp": "eq",
+        "value": true
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "Acute illness flag supersedes ranking."
+    },
+    {
+      "id": "T2D-P4",
+      "label": "Self-treated low-sugar episodes",
+      "when": {
+        "op": "cmp",
+        "field": "answers.sx_mild_hypo",
+        "cmp": "eq",
+        "value": true
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "Recurrent hypoglycaemia symptoms warrant review."
+    },
+    {
+      "id": "T2D-P5",
+      "label": "Several missed doses",
+      "when": {
+        "op": "cmp",
+        "field": "answers.missed_doses",
+        "cmp": "gte",
+        "value": 4
+      },
+      "state": "PROMPT_REVIEW",
+      "patient_message_id": "prompt_review",
+      "rationale": "4 or more missed doses in 7 days. Demo threshold."
+    }
+  ],
+  "free_text_keywords": [
+    {
+      "id": "T2D-FT1",
+      "pattern": "unconscious|seizure|passed out|blacked out",
+      "state": "PROMPT_REVIEW"
+    }
+  ],
+  "patient_messages": {
+    "t2d_urgent": "Your answers suggest a possible low blood sugar emergency or a serious illness. If you are able, follow the low-sugar plan you were given, then call your local emergency number or have someone take you to emergency care now. Do not wait for a reply from this app."
+  },
+  "treatment_option_cards": [
+    {
+      "id": "t2d_metformin",
+      "label": "Biguanide (metformin-type) class",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Type 2 diabetes, commonly considered early class (illustrative).",
+      "why_relevant": "Low intrinsic hypoglycaemia risk; widely used (illustrative).",
+      "why_may_not_suit": "Kidney function limits use; GI tolerability.",
+      "considerations": [
+        "Kidney function must be current and verified",
+        "GI tolerability",
+        "Low cost / wide access"
+      ],
+      "requires_fields": [
+        "egfr"
+      ],
+      "hard_exclusions": [
+        {
+          "id": "ex_egfr",
+          "when": {
+            "op": "cmp",
+            "field": "profile.egfr",
+            "cmp": "lt",
+            "value": 30
+          },
+          "reason": "eGFR below demo exclusion threshold (30) — verified"
+        },
+        {
+          "id": "ex_allergy",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "biguanide"
+          },
+          "reason": "Documented allergy to biguanide class"
+        }
+      ],
+      "cautions": [
+        {
+          "id": "ca_kidney",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "kidney_disease"
+          },
+          "note": "Kidney condition on record — current verified renal function needed before considering"
+        }
+      ],
+      "preference_effects": [
+        {
+          "preference": "avoid_hypoglycemia",
+          "effect": "aligns",
+          "note": "Low hypoglycaemia risk as monotherapy (illustrative)"
+        }
+      ],
+      "evidence": [
+        {
+          "guideline_source_id": "ada-soc-2026",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "US / international",
+          "rationale": "Illustrative rationale: class widely considered in type 2 diabetes; pending clinical review.",
+          "applicable_population": "Adults with type 2 diabetes"
+        }
+      ]
+    },
+    {
+      "id": "t2d_sglt2",
+      "label": "SGLT2 inhibitor class",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Type 2 diabetes, particularly with kidney or cardiovascular comorbidity (illustrative).",
+      "why_relevant": "Considered where kidney/cardiovascular comorbidity exists; low hypoglycaemia risk (illustrative).",
+      "why_may_not_suit": "Genital infection history, volume depletion/illness risk, eGFR-dependent use.",
+      "considerations": [
+        "Genital infection history",
+        "Sick-day guidance",
+        "Cost and access"
+      ],
+      "requires_fields": [
+        "egfr"
+      ],
+      "hard_exclusions": [
+        {
+          "id": "ex_allergy",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "sglt2"
+          },
+          "reason": "Documented allergy to SGLT2 inhibitor class"
+        }
+      ],
+      "cautions": [
+        {
+          "id": "ca_gen",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "genital_infection_history"
+          },
+          "note": "Recurrent genital infection history — clinician to review"
+        },
+        {
+          "id": "ca_k",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "kidney_disease"
+          },
+          "note": "Kidney condition on record — eGFR-dependent considerations apply"
+        }
+      ],
+      "preference_effects": [
+        {
+          "preference": "avoid_hypoglycemia",
+          "effect": "aligns",
+          "note": "Low hypoglycaemia risk as monotherapy (illustrative)"
+        }
+      ],
+      "evidence": [
+        {
+          "guideline_source_id": "ada-soc-2026",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "US / international",
+          "rationale": "Illustrative rationale: class considered with comorbid kidney/cardiovascular disease; pending clinical review.",
+          "applicable_population": "Adults with type 2 diabetes"
+        }
+      ]
+    },
+    {
+      "id": "t2d_glp1",
+      "label": "GLP-1 receptor agonist class",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Type 2 diabetes (illustrative).",
+      "why_relevant": "Low hypoglycaemia risk; weight considerations (illustrative).",
+      "why_may_not_suit": "GI tolerability; injectable route for many agents; cost/access.",
+      "considerations": [
+        "GI tolerability",
+        "Route of administration preference",
+        "Cost and access"
+      ],
+      "requires_fields": [],
+      "hard_exclusions": [
+        {
+          "id": "ex_allergy",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "glp1"
+          },
+          "reason": "Documented allergy to GLP-1 receptor agonist class"
+        }
+      ],
+      "cautions": [
+        {
+          "id": "ca_panc",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "pancreatitis_history"
+          },
+          "note": "Pancreatitis history — clinician to review"
+        }
+      ],
+      "preference_effects": [
+        {
+          "preference": "avoid_hypoglycemia",
+          "effect": "aligns",
+          "note": "Low hypoglycaemia risk as monotherapy (illustrative)"
+        },
+        {
+          "preference": "avoid_injections",
+          "effect": "conflicts",
+          "note": "Many agents in this class are injectable"
+        }
+      ],
+      "evidence": [
+        {
+          "guideline_source_id": "ada-soc-2026",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "US / international",
+          "rationale": "Illustrative rationale: class considered in type 2 diabetes; pending clinical review.",
+          "applicable_population": "Adults with type 2 diabetes"
+        }
+      ]
+    },
+    {
+      "id": "t2d_su",
+      "label": "Sulfonylurea class",
+      "illustrative": true,
+      "evidence_category": 3,
+      "indication_context": "Type 2 diabetes, where cost or access limit alternatives (illustrative).",
+      "why_relevant": "Low cost and wide access (illustrative).",
+      "why_may_not_suit": "Higher hypoglycaemia risk, particularly with reduced kidney function.",
+      "considerations": [
+        "Hypoglycaemia risk",
+        "Weight gain",
+        "Cost and access"
+      ],
+      "requires_fields": [
+        "egfr"
+      ],
+      "hard_exclusions": [
+        {
+          "id": "ex_allergy",
+          "when": {
+            "op": "includes",
+            "field": "profile.allergy_classes",
+            "value": "sulfonylurea"
+          },
+          "reason": "Documented allergy to sulfonylurea class"
+        }
+      ],
+      "cautions": [
+        {
+          "id": "ca_k",
+          "when": {
+            "op": "includes",
+            "field": "profile.condition_tags",
+            "value": "kidney_disease"
+          },
+          "note": "Hypoglycaemia risk may be higher with reduced kidney function"
+        }
+      ],
+      "preference_effects": [
+        {
+          "preference": "avoid_hypoglycemia",
+          "effect": "conflicts",
+          "note": "Higher hypoglycaemia risk conflicts with stated preference"
+        }
+      ],
+      "evidence": [
+        {
+          "guideline_source_id": "ada-soc-2026",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "US / international",
+          "rationale": "Illustrative rationale: class considered where cost limits alternatives; pending clinical review.",
+          "applicable_population": "Adults with type 2 diabetes"
+        }
+      ]
+    },
+    {
+      "id": "t2d_education",
+      "label": "Structured education and self-management support",
+      "option_type": "non_drug",
+      "illustrative": true,
+      "evidence_category": 1,
+      "indication_context": "Adjunct for type 2 diabetes (illustrative).",
+      "why_relevant": "Non-drug support that can accompany any plan (illustrative).",
+      "why_may_not_suit": "Does not replace clinician review.",
+      "considerations": [
+        "Access to programmes",
+        "Patient preference"
+      ],
+      "requires_fields": [],
+      "hard_exclusions": [],
+      "cautions": [],
+      "preference_effects": [],
+      "evidence": [
+        {
+          "guideline_source_id": "ada-soc-2026",
+          "published": "2026",
+          "reviewed": "2026-09-15",
+          "jurisdiction": "US / international",
+          "rationale": "Illustrative rationale; pending clinical review.",
+          "applicable_population": "Adults with type 2 diabetes"
+        }
+      ]
+    }
+  ],
+  "interaction_coverage": [
+    "biguanide",
+    "sglt2",
+    "glp1",
+    "sulfonylurea",
+    "insulin",
+    "ace_inhibitor",
+    "arb",
+    "statin"
+  ],
+  "drug_gene_evidence": [],
+  "outcome_definitions": [
+    {
+      "id": "glycemic_target_8w",
+      "label": "Glycaemic target met at 8 weeks",
+      "window_weeks": 8,
+      "definition": "Clinician-defined glycaemic metric at/below individual target at 8 weeks (demo definition)"
+    }
+  ],
+  "trial_search_terms": [
+    "type 2 diabetes",
+    "glycemic control"
+  ]
+}

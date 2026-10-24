@@ -1,0 +1,20 @@
+import { boolean, integer, jsonb, pgTable, text } from "drizzle-orm/pg-core";
+
+/** Each table keeps queryable columns plus a `data` jsonb payload holding the full typed record (see src/lib/models.ts). */
+export const patients = pgTable("patients", { id: text("id").primaryKey(), module_id: text("module_id").notNull(), condition_code: text("condition_code").notNull(), clinician_id: text("clinician_id").notNull(), data: jsonb("data").notNull() });
+export const consents = pgTable("consents", { id: text("id").primaryKey(), patient_id: text("patient_id").notNull(), kind: text("kind").notNull(), granted: boolean("granted").notNull(), at: text("at").notNull(), data: jsonb("data").notNull() });
+export const checkins = pgTable("checkins", { id: text("id").primaryKey(), patient_id: text("patient_id").notNull(), created_at: text("created_at").notNull(), data: jsonb("data").notNull() });
+export const riskEvaluations = pgTable("risk_evaluations", { id: text("id").primaryKey(), checkin_id: text("checkin_id").notNull(), patient_id: text("patient_id").notNull(), state: text("state").notNull(), evaluated_at: text("evaluated_at").notNull(), data: jsonb("data").notNull() });
+export const alerts = pgTable("alerts", { id: text("id").primaryKey(), patient_id: text("patient_id").notNull(), checkin_id: text("checkin_id").notNull(), state: text("state").notNull(), status: text("status").notNull(), created_at: text("created_at").notNull(), data: jsonb("data").notNull() });
+export const comparisons = pgTable("comparisons", { id: text("id").primaryKey(), patient_id: text("patient_id").notNull(), evaluation_id: text("evaluation_id").notNull(), review_state: text("review_state").notNull(), created_at: text("created_at").notNull(), data: jsonb("data").notNull() });
+export const decisions = pgTable("decisions", { id: text("id").primaryKey(), patient_id: text("patient_id").notNull(), comparison_id: text("comparison_id"), action: text("action").notNull(), signed_at: text("signed_at").notNull(), data: jsonb("data").notNull() });
+export const carePlans = pgTable("care_plans", { id: text("id").primaryKey(), patient_id: text("patient_id").notNull(), version: integer("version").notNull(), signed_at: text("signed_at").notNull(), data: jsonb("data").notNull() });
+export const followups = pgTable("followups", { id: text("id").primaryKey(), patient_id: text("patient_id").notNull(), plan_version: integer("plan_version").notNull(), created_at: text("created_at").notNull(), reviewed: boolean("reviewed").notNull(), data: jsonb("data").notNull() });
+export const moduleVersions = pgTable("module_versions", { id: text("id").primaryKey(), module_id: text("module_id").notNull(), version: text("version").notNull(), status: text("status").notNull(), created_at: text("created_at").notNull(), data: jsonb("data").notNull() });
+export const researchRecords = pgTable("research_records", { id: text("id").primaryKey(), patient_id: text("patient_id").notNull(), condition_code: text("condition_code").notNull(), data: jsonb("data").notNull() });
+export const cohorts = pgTable("cohorts", { id: text("id").primaryKey(), hash: text("hash").notNull(), created_by: text("created_by").notNull(), created_at: text("created_at").notNull(), data: jsonb("data").notNull() });
+export const hypotheses = pgTable("hypotheses", { id: text("id").primaryKey(), cohort_hash: text("cohort_hash").notNull(), status: text("status").notNull(), data: jsonb("data").notNull() });
+export const auditEvents = pgTable("audit_events", { id: text("id").primaryKey(), ts: text("ts").notNull(), actor_id: text("actor_id").notNull(), actor_role: text("actor_role").notNull(), action: text("action").notNull(), outcome: text("outcome").notNull(), resource_id: text("resource_id"), data: jsonb("data").notNull() });
+export const settings = pgTable("settings", { key: text("key").primaryKey(), data: jsonb("data").notNull() });
+
+export const ALL_TABLES = { patients, consents, checkins, riskEvaluations, alerts, comparisons, decisions, carePlans, followups, moduleVersions, researchRecords, cohorts, hypotheses, auditEvents, settings };

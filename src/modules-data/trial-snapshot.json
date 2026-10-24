@@ -1,0 +1,34 @@
+{
+  "snapshot_date": "2026-09-30",
+  "source": "MOCK REGISTRY SNAPSHOT — fictional trials, not ClinicalTrials.gov data",
+  "trials": [
+    {
+      "id": "MOCK-T2D-001", "title": "Mock study: add-on therapy in type 2 diabetes with mildly reduced kidney function", "condition_code": "T2D", "status": "Recruiting", "last_update": "2026-09-12", "sponsor": "Fictional Research Institute",
+      "criteria": [
+        { "id": "c1", "kind": "inclusion", "text": "Baseline severity moderate or severe", "when": { "op": "in", "field": "profile.baseline_severity", "values": ["moderate", "severe"] } },
+        { "id": "c2", "kind": "inclusion", "text": "eGFR 30 or higher", "when": { "op": "cmp", "field": "profile.egfr", "cmp": "gte", "value": 30 } },
+        { "id": "c3", "kind": "inclusion", "text": "eGFR 90 or lower", "when": { "op": "cmp", "field": "profile.egfr", "cmp": "lte", "value": 90 } },
+        { "id": "c4", "kind": "exclusion", "text": "Currently pregnant", "when": { "op": "cmp", "field": "profile.pregnant", "cmp": "eq", "value": true } },
+        { "id": "c5", "kind": "exclusion", "text": "Recorded adverse event on current treatment", "when": { "op": "cmp", "field": "profile.adverse_event", "cmp": "eq", "value": true } }
+      ]
+    },
+    {
+      "id": "MOCK-HTN-001", "title": "Mock study: home-monitoring support in adults with uncontrolled hypertension", "condition_code": "HTN", "status": "Recruiting", "last_update": "2026-08-28", "sponsor": "Fictional Research Institute",
+      "criteria": [
+        { "id": "c1", "kind": "inclusion", "text": "Baseline severity moderate or severe", "when": { "op": "in", "field": "profile.baseline_severity", "values": ["moderate", "severe"] } },
+        { "id": "c2", "kind": "exclusion", "text": "eGFR below 30", "when": { "op": "cmp", "field": "profile.egfr", "cmp": "lt", "value": 30 } },
+        { "id": "c3", "kind": "exclusion", "text": "Currently pregnant", "when": { "op": "cmp", "field": "profile.pregnant", "cmp": "eq", "value": true } },
+        { "id": "c4", "kind": "inclusion", "text": "Adult aged 18–74", "when": { "op": "in", "field": "profile.age_band", "values": ["18-34", "35-54", "55-74"] } }
+      ]
+    },
+    {
+      "id": "MOCK-DEP-001", "title": "Mock study: adjunct therapy in depression after first treatment", "condition_code": "DEP", "status": "Not yet recruiting", "last_update": "2026-07-05", "sponsor": "Fictional Research Institute",
+      "criteria": [
+        { "id": "c1", "kind": "inclusion", "text": "Baseline severity moderate or severe", "when": { "op": "in", "field": "profile.baseline_severity", "values": ["moderate", "severe"] } },
+        { "id": "c2", "kind": "exclusion", "text": "History of bipolar disorder", "when": { "op": "cmp", "field": "profile.bipolar_history", "cmp": "eq", "value": true } },
+        { "id": "c3", "kind": "exclusion", "text": "Currently pregnant", "when": { "op": "cmp", "field": "profile.pregnant", "cmp": "eq", "value": true } },
+        { "id": "c4", "kind": "inclusion", "text": "Has received a first-line treatment", "when": { "op": "present", "field": "profile.prior_treatment_class" } }
+      ]
+    }
+  ]
+}

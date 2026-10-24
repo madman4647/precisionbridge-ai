@@ -1,0 +1,4 @@
+[
+  { "id": "CAT-001", "title": "Mock catalog entry: SGLT2-class exposure and glycaemic target (demo placeholder, not a real citation)", "exposure_class": "t2d_sglt2", "endpoint": "glycemic_target_8w", "note": "Fictional entry for demonstration of evidence linkage." },
+  { "id": "CAT-002", "title": "Mock catalog entry: ACEi/ARB-class exposure and BP target (demo placeholder, not a real citation)", "exposure_class": "htn_acei_arb", "endpoint": "bp_controlled_8w", "note": "Fictional entry for demonstration of evidence linkage." }
+]
